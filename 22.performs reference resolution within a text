@@ -1,0 +1,12 @@
+import spacy
+import neuralcoref
+nlp = spacy.load("en_core_web_sm")
+neuralcoref.add_to_pipe(nlp)
+def resolve_coreferences(text):
+    doc = nlp(text)
+    return doc._.coref_resolved
+
+text = "John went to the store. He bought some milk."
+resolved_text = resolve_coreferences(text)
+print(f"Original Text: {text}")
+print(f"Resolved Text: {resolved_text}")

@@ -1,0 +1,26 @@
+import nltk
+grammar = nltk.CFG.fromstring("""
+    S -> NP_SG VP_SG | NP_PL VP_PL
+    NP_SG -> 'the' 'dog' | 'a' 'cat'
+    NP_PL -> 'the' 'dogs' | 'the' 'cats'
+    VP_SG -> 'runs' | 'jumps'
+    VP_PL -> 'run' | 'jump'
+""")
+def check_agreement(sentence):
+    words = sentence.split()
+    parser = nltk.ChartParser(grammar)
+    try:
+        for tree in parser.parse(words):
+            print(f"Valid agreement for sentence: '{sentence}'")
+            return
+        print(f"Invalid agreement for sentence: '{sentence}'")
+    except (nltk.EarleyChartParser, ValueError):
+        print(f"Invalid agreement for sentence: '{sentence}'")
+if __name__ == "__main__":
+    sentences = [
+        "the dog runs",
+        "the dogs run",
+        "a cats run", 
+    ]
+    for sentence in sentences:
+        check_agreement(sentence)
